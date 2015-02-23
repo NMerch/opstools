@@ -32,7 +32,6 @@ def main(*argv):
     ssh_key = settings.settings['default_ssh_key']
     ami = settings.settings['ami']
 
-
     try:
         opts, args = getopt.getopt(argv[0], "bhs:g:n:x:a:v:z:k:")
     except getopt.GetoptError:
@@ -72,12 +71,12 @@ def main(*argv):
         if opt == '-k':
             ssh_key = arg
 
-    provision(conn, instance_size, security_groups, num_of_instances, name, persist_storage, ssh_key,
+    provision(conn, instance_size, security_groups, num_of_instances, name, ssh_key, persist_storage,
               zone, ami, seed, _bootstrap)
 
 
-def provision(conn, instance_size, security_groups, num_of_instances, name, persist_storage, ssh_key,
-              zone=None, ami=settings.settings['default_ami'], seed=1, _bootstrap=None):
+def provision(conn, instance_size, security_groups, num_of_instances, name, ssh_key,
+              persist_storage=False, zone=None, ami=settings.settings['default_ami'], seed=1, _bootstrap=None):
 
     original_name = name
 
@@ -185,7 +184,6 @@ def validate_group(conn, arg):
     return groups
 
 
-# Ensure provided size is valid
 def validate_instance_size(instance):
     """ Ensure provided EC2 type (size) is valid """
     if instance in settings.settings['sizes']:
